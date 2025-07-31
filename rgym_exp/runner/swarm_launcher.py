@@ -19,9 +19,16 @@ def main(cfg: DictConfig):
     is_master = False
     HivemindRendezvouz.init(is_master=is_master)
 
-    game_manager = instantiate(cfg.game_manager)
-    game_manager.run_game()
+    try:
+        game_manager = instantiate(cfg.game_manager)
+        game_manager.run_game()
+    except Exception as e:
+        import traceback
+        print("[swarm_launcher] Caught exception:")
+        traceback.print_exc()
 
+        # 强制退出进程，触发容器退出
+        os._exit(1)
 
 if __name__ == "__main__":
     os.environ["HYDRA_FULL_ERROR"] = "1"
