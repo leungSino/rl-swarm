@@ -22,6 +22,13 @@ def main(cfg: DictConfig):
     try:
         game_manager = instantiate(cfg.game_manager)
         game_manager.run_game()
+        print("======================================")
+        print("======================================")
+        print("======================================")
+        print("======================================")
+        print("准备测试进程退出")
+        time.sleep(3)
+        os._exit(1)
     except Exception as e:
         import traceback
         print("[swarm_launcher] Caught exception:")
