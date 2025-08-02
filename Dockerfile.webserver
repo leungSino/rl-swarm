@@ -33,4 +33,10 @@ COPY ./hivemind_exp/contracts/*.json ./hivemind_exp/contracts/
 RUN pip install pytest pytest-cov
 
 # Run tests first, then start the server
-CMD ["sh", "-c", "pytest api -v && opentelemetry-instrument python -m api.server"]
+# CMD ["sh", "-c", "pytest api -v && opentelemetry-instrument python -m api.server"]
+
+# 先运行测试，失败退出容器
+RUN pytest api -v
+
+# 直接启动 Python 程序，不用 sh -c
+CMD ["opentelemetry-instrument", "python", "-m", "api.server"]
