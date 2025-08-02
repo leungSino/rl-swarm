@@ -20,22 +20,15 @@ def main(cfg: DictConfig):
     HivemindRendezvouz.init(is_master=is_master)
 
     try:
-        import traceback, time
-        print("======================================")
-        print("======================================")
-        print("======================================")
-        print("======================================")
-        print("准备测试进程退出")
-        time.sleep(3)
-        os._exit(1)
         game_manager = instantiate(cfg.game_manager)
         game_manager.run_game()
     except Exception as e:
-        import traceback
+        import traceback, time
         print("[swarm_launcher] Caught exception:")
         traceback.print_exc()
 
         # 强制退出进程，触发容器退出
+        time.sleep(3)
         os._exit(1)
 
 if __name__ == "__main__":
