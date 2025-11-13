@@ -12,7 +12,6 @@ export ORG_ID
 export HF_HUB_DOWNLOAD_TIMEOUT=120  # 2 minutes
 export SWARM_CONTRACT="0x7745a8FE4b8D2D2c3BB103F8dCae822746F35Da0"
 export HUGGINGFACE_ACCESS_TOKEN="None"
-export PRG_GAME=true
 export MODEL_NAME="Gensyn/Qwen2.5-0.5B-Instruct"
 
 # Path to an RSA private key. If this path does not exist, a new key pair will be created.
@@ -252,7 +251,6 @@ echo_green ">> Done!"
 echo_green ">> Configuring defaults for non-interactive mode..."
 echo_green ">> Hugging Face upload disabled (default)."
 echo_green ">> Using model: $MODEL_NAME"
-echo_green ">> Playing PRG game: $PRG_GAME"
 
 echo -en $RESET_TEXT
 echo_green ">> Good luck in the swarm!"
