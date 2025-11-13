@@ -12,6 +12,8 @@ export ORG_ID
 export HF_HUB_DOWNLOAD_TIMEOUT=120  # 2 minutes
 export SWARM_CONTRACT="0x7745a8FE4b8D2D2c3BB103F8dCae822746F35Da0"
 export HUGGINGFACE_ACCESS_TOKEN="None"
+export PRG_GAME=true
+export MODEL_NAME="Gensyn/Qwen2.5-0.5B-Instruct"
 
 # Path to an RSA private key. If this path does not exist, a new key pair will be created.
 # Remove this file if you want a new PeerID.
@@ -65,7 +67,7 @@ cleanup() {
     echo_green ">> Shutting down trainer..."
 
     # Remove modal credentials if they exist
-    rm -r $ROOT_DIR/modal-login/temp-data/*.json 2> /dev/null || true
+    # rm -r $ROOT_DIR/modal-login/temp-data/*.json 2> /dev/null || true
 
     # Kill all processes belonging to this script's process group
     kill -- -$$ || true
@@ -247,35 +249,10 @@ fi
 echo_green ">> Done!"
 
 
-echo -en $GREEN_TEXT
-read -p ">> Would you like to push models you train in the RL swarm to the Hugging Face Hub? [y/N] " yn
-echo -en $RESET_TEXT
-yn=${yn:-N} # Default to "N" if the user presses Enter
-case $yn in
-    [Yy]*) read -p "Enter your Hugging Face access token: " HUGGINGFACE_ACCESS_TOKEN ;;
-    [Nn]*) HUGGINGFACE_ACCESS_TOKEN="None" ;;
-    *) echo ">>> No answer was given, so NO models will be pushed to Hugging Face Hub" && HUGGINGFACE_ACCESS_TOKEN="None" ;;
-esac
-
-
-echo -en $GREEN_TEXT
-read -p ">> Enter the name of the model you want to use in huggingface repo/name format, or press [Enter] to use the default model. " MODEL_NAME
-echo -en $RESET_TEXT
-
-# Only export MODEL_NAME if user provided a non-empty value
-if [ -n "$MODEL_NAME" ]; then
-    export MODEL_NAME
-    echo_green ">> Using model: $MODEL_NAME"
-else
-    echo_green ">> Using default model from config"
-fi
-#logout to prevent weird env issues, if it fails unset and try again
-if ! hf auth logout > /dev/null 2>&1; then
-    unset HF_TOKEN
-    unset HUGGING_FACE_HUB_TOKEN
-    # if it fails a second time, report stderr
-    hf auth logout > /dev/null 2>&1
-fi
+echo_green ">> Configuring defaults for non-interactive mode..."
+echo_green ">> Hugging Face upload disabled (default)."
+echo_green ">> Using model: $MODEL_NAME"
+echo_green ">> Playing PRG game: $PRG_GAME"
 
 echo -en $RESET_TEXT
 echo_green ">> Good luck in the swarm!"
